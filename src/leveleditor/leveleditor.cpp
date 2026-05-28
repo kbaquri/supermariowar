@@ -60,6 +60,7 @@ void removeifprojectile(IO_MovingObject * object, bool playsound, bool forcedead
 #include <ctype.h>
 #include <cstring>
 #include <cstdlib>
+#include <format>
 
 #ifdef _WIN32
 	#include <windows.h>
@@ -402,17 +403,19 @@ int main(int argc, char *argv[])
 
 void inner_main()
 {
+    printf("-------------------------------------------------------------------------------\n");
+    printf(" %s %s\n", TITLESTRING, MAPTITLESTRING);
+    printf("-------------------------------------------------------------------------------\n");
+    printf("\n---------------- startup ----------------\n");
+
+    App::registerSdlMetadata(std::format("{} {}", TITLESTRING, MAPTITLESTRING));
+
 	ensureSettingsDir();
 
     /* This must occur before any data files are loaded */
     Initialize_Paths();
 
 	bool done;
-
-	printf("-------------------------------------------------------------------------------\n");
-	printf(" %s %s\n", TITLESTRING, MAPTITLESTRING);
-	printf("-------------------------------------------------------------------------------\n");
-	printf("\n---------------- startup ----------------\n");
 
     {
         const std::string options_path(GetHomeDirectory() + "leveleditor.bin");

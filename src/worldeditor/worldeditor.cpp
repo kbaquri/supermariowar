@@ -57,6 +57,7 @@
 #include <string>
 #include <string.h>
 #include <ctype.h>
+#include <format>
 
 #ifdef _WIN32
 	#include <windows.h>
@@ -469,17 +470,19 @@ int main(int argc, char *argv[])
 
 void inner_main()
 {
+    printf("-------------------------------------------------------------------------------\n");
+    printf(" %s %s\n", TITLESTRING, MAPTITLESTRING);
+    printf("-------------------------------------------------------------------------------\n");
+    printf("\n---------------- startup ----------------\n");
+
+    App::registerSdlMetadata(std::format("{} {}", TITLESTRING, MAPTITLESTRING));
+
     ensureSettingsDir();
 
     /* This must occur before any data files are loaded */
     Initialize_Paths();
 
 	bool done;
-
-	printf("-------------------------------------------------------------------------------\n");
-	printf(" %s %s\n", TITLESTRING, MAPTITLESTRING);
-	printf("-------------------------------------------------------------------------------\n");
-	printf("\n---------------- startup ----------------\n");
 
     int saved_col = 0, saved_row = 0;
     {

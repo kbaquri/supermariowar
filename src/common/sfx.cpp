@@ -33,12 +33,10 @@ public:
     void stopMusicTrack() const;
     void stopEffectTrack(size_t idx) const;
 
+    void clearAllEffects() const;
+    void setMusicVolume(float volume) const;
     void setMusicPaused(bool paused) const;
-    void setEffectPaused(size_t idx, bool paused) const;
-
-    void clearAllEffects();
-    void setMusicVolume(float volume);
-    void setEffectVolume(float volume);
+    void setEffectVolume(float volume) const;
 
 private:
     struct SdlMixer {
@@ -54,7 +52,6 @@ private:
 
     void playAudio(const MixAudioPtr& audio, const MixTrackPtr& track, long repeats);
     void stopAudioTrack(const MixTrackPtr& track) const;
-    void setTrackPaused(const MixTrackPtr& track, bool paused) const;
 };
 
 
@@ -170,27 +167,18 @@ void AudioSystem::stopAudioTrack(const MixTrackPtr& track) const {
 
 
 void AudioSystem::setMusicPaused(bool paused) const {
-    setTrackPaused(m_music_track, paused);
+    (paused ? MIX_PauseTrack : MIX_ResumeTrack)(m_music_track.get());
 }
 
-void AudioSystem::setEffectPaused(size_t idx, bool paused) const {
-    setTrackPaused(m_sfx_tracks.at(idx), paused);
-}
-
-void AudioSystem::setTrackPaused(const MixTrackPtr& track, bool paused) const {
-    (paused ? MIX_PauseTrack : MIX_ResumeTrack)(track.get());
-}
-
-
-void AudioSystem::clearAllEffects() {
+void AudioSystem::clearAllEffects() const {
     MIX_StopTag(m_device.get(), TAG_SFX, 0);
 }
 
-void AudioSystem::setMusicVolume(float volume) {
+void AudioSystem::setMusicVolume(float volume) const {
     MIX_SetTrackGain(m_music_track.get(), volume);
 }
 
-void AudioSystem::setEffectVolume(float volume) {
+void AudioSystem::setEffectVolume(float volume) const {
     MIX_SetTagGain(m_device.get(), TAG_SFX, volume);
 }
 } // namespace

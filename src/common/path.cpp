@@ -25,13 +25,6 @@ std::string GetHomeDirectory()
         result = std::string(folder) + result;
     return result;
 
-#elif _WIN32
-    std::string result(".smw/");
-    char folder[MAX_PATH];
-    if (SHGetFolderPathA(NULL, CSIDL_PROFILE, NULL, 0, folder) == S_OK)
-        result = std::string(folder) + "/" + result;
-    return result;
-
 #elif ANDROID
     const char* extstorage = getenv("EXTERNAL_STORAGE");
     std::string result(extstorage ? extstorage: "/mnt/sdcard");
